@@ -1,0 +1,53 @@
+name: Update octocode Formula
+
+on:
+  repository_dispatch:
+    types: [octocode-release]
+
+jobs:
+  update:
+    name: Update octocode formula to ${{ github.event.client_payload.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Compute SHA256 hashes
+        id: hashes
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          BASE="https://github.com/muvon/octocode/releases/download/${VERSION}"
+
+          SHA_X86=$(curl -fsSL "${BASE}/octocode-${VERSION}-x86_64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+          SHA_ARM=$(curl -fsSL "${BASE}/octocode-${VERSION}-aarch64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+
+          echo "sha_x86=${SHA_X86}" >> $GITHUB_OUTPUT
+          echo "sha_arm=${SHA_ARM}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Update formula
+        run: |
+          VERSION="${{ steps.hashes.outputs.version }}"
+          SHA_X86="${{ steps.hashes.outputs.sha_x86 }}"
+          SHA_ARM="${{ steps.hashes.outputs.sha_arm }}"
+
+          FORMULA="Formula/octocode.rb"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+
+          awk -v sha_x86="$SHA_X86" -v sha_arm="$SHA_ARM" '
+            /on_intel/  { in_intel=1 }
+            /on_arm/    { in_intel=0; in_arm=1 }
+            /end/       { in_intel=0; in_arm=0 }
+            in_intel && /sha256/ { sub(/"[a-f0-9]+"/, "\"" sha_x86 "\"") }
+            in_arm   && /sha256/ { sub(/"[a-f0-9]+"/, "\"" sha_arm "\"") }
+            { print }
+          ' "$FORMULA" > "$FORMULA.tmp" && mv "$FORMULA.tmp" "$FORMULA"
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/octocode.rb
+          git commit -m "octocode ${{ steps.hashes.outputs.version }}"
+          git push

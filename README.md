@@ -18,13 +18,27 @@ Session-based AI development assistant with conversational codebase interaction,
 brew install muvon/tap/octomind
 ```
 
-Or after tapping:
+### octocode
+
+AI-powered code indexer with semantic search, GraphRAG knowledge graphs, and MCP server for multi-language codebases.
 
 ```bash
-brew install octomind
+brew install muvon/tap/octocode
 ```
+
+### octobrain
+
+Standalone memory management system for AI context and conversation state.
+
+```bash
+brew install muvon/tap/octobrain
+```
+
+> **Note:** octobrain macOS builds are ARM only (Apple Silicon).
 
 ## Links
 
-- [octomind on GitHub](https://github.com/muvon/octomind)
-- [Documentation](https://octomind.muvon.io)
+- [octomind](https://github.com/muvon/octomind) · [docs](https://octomind.muvon.io)
+- [octocode](https://github.com/muvon/octocode) · [docs](https://octocode.muvon.io)
+- [octobrain](https://github.com/muvon/octobrain)
+
