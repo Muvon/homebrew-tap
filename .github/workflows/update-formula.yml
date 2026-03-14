@@ -1,0 +1,56 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [octomind-release]
+
+jobs:
+  update:
+    name: Update octomind formula to ${{ github.event.client_payload.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Compute SHA256 hashes
+        id: hashes
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          BASE="https://github.com/muvon/octomind/releases/download/${VERSION}"
+
+          SHA_X86=$(curl -sL "${BASE}/octomind-${VERSION}-x86_64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+          SHA_ARM=$(curl -sL "${BASE}/octomind-${VERSION}-aarch64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+
+          echo "sha_x86=${SHA_X86}" >> $GITHUB_OUTPUT
+          echo "sha_arm=${SHA_ARM}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Update formula
+        run: |
+          VERSION="${{ steps.hashes.outputs.version }}"
+          SHA_X86="${{ steps.hashes.outputs.sha_x86 }}"
+          SHA_ARM="${{ steps.hashes.outputs.sha_arm }}"
+
+          FORMULA="Formula/octomind.rb"
+
+          # Update version
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+
+          # Update x86_64 sha256 (first occurrence after intel block)
+          # Use awk to replace sha256 values in order: first = x86, second = arm
+          awk -v sha_x86="$SHA_X86" -v sha_arm="$SHA_ARM" '
+            /on_intel/  { in_intel=1 }
+            /on_arm/    { in_intel=0; in_arm=1 }
+            /end/       { in_intel=0; in_arm=0 }
+            in_intel && /sha256/ { sub(/"[a-f0-9]+"/, "\"" sha_x86 "\"") }
+            in_arm   && /sha256/ { sub(/"[a-f0-9]+"/, "\"" sha_arm "\"") }
+            { print }
+          ' "$FORMULA" > "$FORMULA.tmp" && mv "$FORMULA.tmp" "$FORMULA"
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/octomind.rb
+          git commit -m "octomind ${{ steps.hashes.outputs.version }}"
+          git push
