@@ -1,6 +1,6 @@
 # Muvon Homebrew Tap
 
-Homebrew formulae for [Muvon](https://muvon.io) tools.
+Homebrew formulae and casks for [Muvon](https://muvon.io) tools.
 
 ## Install
 
@@ -36,8 +36,21 @@ brew install muvon/tap/octobrain
 
 > **Note:** octobrain macOS builds are ARM only (Apple Silicon).
 
+## Casks
+
+### octoweb
+
+Lightweight macOS browser with AI assistant integration via ACP.
+
+```bash
+brew install --cask muvon/tap/octoweb
+```
+
+**Dependencies:** `octomind` and `octobrain` are automatically installed via Homebrew.
+
 ## Links
 
+- [octoweb](https://github.com/muvon/octoweb)
 - [octomind](https://github.com/muvon/octomind) · [docs](https://octomind.muvon.io)
 - [octocode](https://github.com/muvon/octocode) · [docs](https://octocode.muvon.io)
 - [octobrain](https://github.com/muvon/octobrain)
