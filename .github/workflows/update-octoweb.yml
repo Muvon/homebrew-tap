@@ -1,0 +1,53 @@
+name: Update octoweb Cask
+
+on:
+  repository_dispatch:
+    types: [octoweb-release]
+
+jobs:
+  update:
+    name: Update octoweb cask to ${{ github.event.client_payload.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Compute SHA256 hashes
+        id: hashes
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          BASE="https://github.com/muvon/octoweb/releases/download/${VERSION}"
+
+          SHA_X86=$(curl -fsSL "${BASE}/Octoweb-${VERSION}-x86_64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+          SHA_ARM=$(curl -fsSL "${BASE}/Octoweb-${VERSION}-aarch64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+
+          echo "sha_x86=${SHA_X86}" >> $GITHUB_OUTPUT
+          echo "sha_arm=${SHA_ARM}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Update cask
+        run: |
+          VERSION="${{ steps.hashes.outputs.version }}"
+          SHA_X86="${{ steps.hashes.outputs.sha_x86 }}"
+          SHA_ARM="${{ steps.hashes.outputs.sha_arm }}"
+
+          CASK="Casks/octoweb.rb"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$CASK"
+
+          awk -v sha_x86="$SHA_X86" -v sha_arm="$SHA_ARM" '
+            /on_intel/  { in_intel=1 }
+            /on_arm/    { in_intel=0; in_arm=1 }
+            /end/       { in_intel=0; in_arm=0 }
+            in_intel && /sha256/ { sub(/"[^"]+"/, "\"" sha_x86 "\"") }
+            in_arm   && /sha256/ { sub(/"[^"]+"/, "\"" sha_arm "\"") }
+            { print }
+          ' "$CASK" > "$CASK.tmp" && mv "$CASK.tmp" "$CASK"
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/octoweb.rb
+          git commit -m "octoweb ${{ steps.hashes.outputs.version }}"
+          git push
