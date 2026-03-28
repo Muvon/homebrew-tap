@@ -1,4 +1,4 @@
-class Octoweb < Cask
+cask "octoweb" do
   desc "Lightweight macOS browser with AI assistant integration"
   homepage "https://github.com/muvon/octoweb"
   version "0.1.0"
