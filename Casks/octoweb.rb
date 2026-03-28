@@ -2,7 +2,6 @@ cask "octoweb" do
   desc "Lightweight macOS browser with AI assistant integration"
   homepage "https://github.com/muvon/octoweb"
   version "0.1.0"
-  license "Apache-2.0"
 
   on_macos do
     on_intel do
