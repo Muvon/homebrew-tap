@@ -4,6 +4,8 @@ class Octomind < Formula
   version "0.23.0"
   license "Apache-2.0"
 
+  depends_on "git"
+
   on_macos do
     on_intel do
       url "https://github.com/muvon/octomind/releases/download/#{version}/octomind-#{version}-x86_64-apple-darwin.tar.gz"
