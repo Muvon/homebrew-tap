@@ -1,0 +1,60 @@
+name: Update vext Cask
+
+on:
+  repository_dispatch:
+    types: [vext-release]
+
+jobs:
+  update:
+    name: Update vext cask to ${{ github.event.client_payload.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Fetch DMG and compute SHA256
+        id: hash
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          MAJOR="${VERSION%%.*}"
+          URL="https://cdn.getvext.app/${MAJOR}/Vext-${VERSION}.dmg"
+
+          # CDN may need a moment to propagate after the release publishes.
+          # Retry a few times before giving up.
+          for i in 1 2 3 4 5; do
+            if curl -fsSL "$URL" -o /tmp/vext.dmg; then
+              break
+            fi
+            echo "DMG not yet at ${URL} (attempt $i), retrying in 20s..."
+            sleep 20
+          done
+
+          if [ ! -s /tmp/vext.dmg ]; then
+            echo "Failed to fetch ${URL}"
+            exit 1
+          fi
+
+          SHA=$(sha256sum /tmp/vext.dmg | awk '{print $1}')
+          echo "sha=${SHA}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Update cask
+        run: |
+          VERSION="${{ steps.hash.outputs.version }}"
+          SHA="${{ steps.hash.outputs.sha }}"
+          CASK="Casks/vext.rb"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$CASK"
+          sed -i "s/sha256 \".*\"/sha256 \"${SHA}\"/" "$CASK"
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/vext.rb
+          if git diff --cached --quiet; then
+            echo "No changes — cask already at ${{ steps.hash.outputs.version }}"
+            exit 0
+          fi
+          git commit -m "vext ${{ steps.hash.outputs.version }}"
+          git push
