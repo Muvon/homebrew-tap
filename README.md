@@ -48,8 +48,19 @@ brew install --cask muvon/tap/octoweb
 
 **Dependencies:** `octomind` and `octobrain` are automatically installed via Homebrew.
 
+### vext
+
+Fast local voice-to-text for macOS. Dictation, meeting recording, translation, and LLM-powered text enhancement.
+
+```bash
+brew install --cask muvon/tap/vext
+```
+
+> **Note:** Apple Silicon only (M1/M2/M3/M4).
+
 ## Links
 
+- [vext](https://github.com/muvon/vext) · [site](https://getvext.app)
 - [octoweb](https://github.com/muvon/octoweb)
 - [octomind](https://github.com/muvon/octomind) · [docs](https://octomind.muvon.io)
 - [octocode](https://github.com/muvon/octocode) · [docs](https://octocode.muvon.io)
