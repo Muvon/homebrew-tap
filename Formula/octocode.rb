@@ -1,6 +1,6 @@
 class Octocode < Formula
   desc "AI-powered code indexer with semantic search, GraphRAG knowledge graphs, and MCP server"
-  homepage "https://octocode.muvon.io"
+  homepage "https://octomind.run/product/octocode/"
   version "0.14.1"
   license "Apache-2.0"
 

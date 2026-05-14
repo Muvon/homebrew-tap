@@ -1,6 +1,6 @@
 class Octomind < Formula
   desc "Session-based AI development assistant with MCP tools and multi-provider AI integration"
-  homepage "https://octomind.muvon.io"
+  homepage "https://octomind.run/product/octomind/"
   version "0.28.0"
   license "Apache-2.0"
 

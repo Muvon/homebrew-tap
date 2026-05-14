@@ -36,6 +36,14 @@ brew install muvon/tap/octobrain
 
 > **Note:** octobrain macOS builds are ARM only (Apple Silicon).
 
+### octofs
+
+Tuned and fully-featured MCP for working with the filesystem in an LLM-optimized way.
+
+```bash
+brew install muvon/tap/octofs
+```
+
 ## Casks
 
 ### octoweb
@@ -56,13 +64,24 @@ Fast local voice-to-text for macOS. Dictation, meeting recording, translation, a
 brew install --cask muvon/tap/vext
 ```
 
-> **Note:** Apple Silicon only (M1/M2/M3/M4).
+> **Note:** Apple Silicon only (M1/M2/M3/M4). Requires macOS Sonoma or newer.
+
+### timex
+
+Automatic Mac time tracker, break timer, and lid-down keeper — all in one menu bar pill. Local SQLite, no cloud, no account.
+
+```bash
+brew install --cask muvon/tap/timex
+```
+
+> **Note:** Apple Silicon only (M1/M2/M3/M4). Requires macOS Sequoia or newer.
 
 ## Links
 
 - [vext](https://github.com/muvon/vext) · [site](https://getvext.app)
-- [octoweb](https://github.com/muvon/octoweb)
-- [octomind](https://github.com/muvon/octomind) · [docs](https://octomind.muvon.io)
-- [octocode](https://github.com/muvon/octocode) · [docs](https://octocode.muvon.io)
-- [octobrain](https://github.com/muvon/octobrain)
-
+- [timex](https://github.com/muvon/timex) · [site](https://gettimex.app)
+- [octoweb](https://github.com/muvon/octoweb) · [docs](https://octomind.run/product/octoweb/)
+- [octomind](https://github.com/muvon/octomind) · [docs](https://octomind.run/product/octomind/)
+- [octocode](https://github.com/muvon/octocode) · [docs](https://octomind.run/product/octocode/)
+- [octofs](https://github.com/muvon/octofs) · [docs](https://octomind.run/product/octofs/)
+- [octobrain](https://github.com/muvon/octobrain) · [docs](https://octomind.run/product/octobrain/)
