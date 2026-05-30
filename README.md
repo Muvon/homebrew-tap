@@ -76,10 +76,21 @@ brew install --cask muvon/tap/timex
 
 > **Note:** Apple Silicon only (M1/M2/M3/M4). Requires macOS Sequoia or newer.
 
+### typetab
+
+On-device autocomplete for macOS — LLM-powered ghost text and spelling correction that learns your writing locally.
+
+```bash
+brew install --cask muvon/tap/typetab
+```
+
+> **Note:** Apple Silicon only (M1/M2/M3/M4). Requires macOS Ventura or newer.
+
 ## Links
 
 - [vext](https://github.com/muvon/vext) · [site](https://getvext.app)
 - [timex](https://github.com/muvon/timex) · [site](https://gettimex.app)
+- [typetab](https://github.com/muvon/typetab) · [site](https://typetab.app)
 - [octoweb](https://github.com/muvon/octoweb) · [docs](https://octomind.run/product/octoweb/)
 - [octomind](https://github.com/muvon/octomind) · [docs](https://octomind.run/product/octomind/)
 - [octocode](https://github.com/muvon/octocode) · [docs](https://octomind.run/product/octocode/)
