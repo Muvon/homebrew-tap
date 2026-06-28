@@ -44,6 +44,14 @@ Tuned and fully-featured MCP for working with the filesystem in an LLM-optimized
 brew install muvon/tap/octofs
 ```
 
+### octohub
+
+High-performance LLM proxy server with completion chaining and full request/response logging.
+
+```bash
+brew install muvon/tap/octohub
+```
+
 ## Casks
 
 ### octoweb
@@ -96,3 +104,4 @@ brew install --cask muvon/tap/typetab
 - [octocode](https://github.com/muvon/octocode) · [docs](https://octomind.run/product/octocode/)
 - [octofs](https://github.com/muvon/octofs) · [docs](https://octomind.run/product/octofs/)
 - [octobrain](https://github.com/muvon/octobrain) · [docs](https://octomind.run/product/octobrain/)
+- [octohub](https://github.com/muvon/octohub)
