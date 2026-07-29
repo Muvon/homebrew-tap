@@ -1,18 +1,18 @@
 class Octofs < Formula
   desc "Tuned and fully-featured MCP to work with the filesystem in LLM optimized way"
   homepage "https://github.com/muvon/octofs"
-  version "0.5.2"
+  version "0.6.0"
   license "Apache-2.0"
 
   on_macos do
     on_intel do
       url "https://github.com/Muvon/octofs/releases/download/#{version}/octofs-#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "95349ef785e4c6946858a71142c6822c3f6a20ed7a4804436b97ea7456b0f06f"
+      sha256 "415d2e1600fecf817c5be513281455663be73c0373f1becb463123b6326005ef"
     end
 
     on_arm do
       url "https://github.com/Muvon/octofs/releases/download/#{version}/octofs-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "45f7eb7c2624ed5aefae7a4d7c76900870194769a1fd08494d78bbfcba387ff1"
+      sha256 "cce1f4fd32619fd9505baaa21f8543d4f9221142159895edbaffbe4f9950f104"
     end
   end
 
