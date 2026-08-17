@@ -1,18 +1,18 @@
 class Octocode < Formula
   desc "AI-powered code indexer with semantic search, GraphRAG knowledge graphs, and MCP server"
   homepage "https://octomind.run/product/octocode/"
-  version "0.20.2"
+  version "0.21.0"
   license "Apache-2.0"
 
   on_macos do
     on_intel do
       url "https://github.com/muvon/octocode/releases/download/#{version}/octocode-#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "a5e7357c0e44f76b1e0f6eee21b840f31ba8c3e86135e11a866fcf9736b7b561"
+      sha256 "f98f9ec4d9275bc671c76883b9373abc3ea36d4bdf19cf6d7a1406e62f63e4a1"
     end
 
     on_arm do
       url "https://github.com/muvon/octocode/releases/download/#{version}/octocode-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "6f0879140da6ad8d26a3372f1d85b785c5775403e3aba737a4d0e6a34ccc6ea2"
+      sha256 "33b239bb785b901e8544b5252739f1b8dfc725d61dfdc0a72f9885818d06f2ec"
     end
   end
 
