@@ -62,6 +62,14 @@ brew install muvon/tap/yoda
 
 > **Note:** Requires Docker with the Compose plugin at runtime.
 
+Install the latest master build instead:
+
+```bash
+brew install --HEAD muvon/tap/yoda
+```
+
+Update it later with `brew upgrade --fetch-HEAD muvon/tap/yoda`.
+
 ## Casks
 
 ### octoweb

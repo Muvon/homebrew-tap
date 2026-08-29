@@ -4,6 +4,7 @@ class Yoda < Formula
   url "https://github.com/Muvon/yoda/archive/refs/tags/2.4.tar.gz"
   sha256 "dd435caf04b82fc426a4b741a2533af65cdb26fd8dcc9e7497cfaf29a24253a7"
   version "2.4"
+  head "https://github.com/Muvon/yoda.git"
 
   depends_on "bash"
   depends_on "git"
@@ -14,6 +15,8 @@ class Yoda < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/yoda version")
+    output = shell_output("#{bin}/yoda version")
+    assert_match "Yoda version:", output
+    assert_match version.to_s, output unless build.head?
   end
 end
