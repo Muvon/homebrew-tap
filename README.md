@@ -52,6 +52,16 @@ High-performance LLM proxy server with completion chaining and full request/resp
 brew install muvon/tap/octohub
 ```
 
+### yoda
+
+Dockerize any project and deploy it to your servers — with pure Bash.
+
+```bash
+brew install muvon/tap/yoda
+```
+
+> **Note:** Requires Docker with the Compose plugin at runtime.
+
 ## Casks
 
 ### octoweb
@@ -105,3 +115,4 @@ brew install --cask muvon/tap/typetab
 - [octofs](https://github.com/muvon/octofs) · [docs](https://octomind.run/product/octofs/)
 - [octobrain](https://github.com/muvon/octobrain) · [docs](https://octomind.run/product/octobrain/)
 - [octohub](https://github.com/muvon/octohub)
+- [yoda](https://github.com/muvon/yoda)

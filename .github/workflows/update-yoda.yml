@@ -1,0 +1,40 @@
+name: Update yoda Formula
+
+on:
+  repository_dispatch:
+    types: [yoda-release]
+
+jobs:
+  update:
+    name: Update yoda formula to ${{ github.event.client_payload.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Compute SHA256 hash
+        id: hash
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          SHA=$(curl -fsSL "https://github.com/Muvon/yoda/archive/refs/tags/${VERSION}.tar.gz" | sha256sum | awk '{print $1}')
+
+          echo "sha=${SHA}" >> $GITHUB_OUTPUT
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: Update formula
+        run: |
+          VERSION="${{ steps.hash.outputs.version }}"
+          SHA="${{ steps.hash.outputs.sha }}"
+
+          FORMULA="Formula/yoda.rb"
+
+          sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
+          sed -i "s/sha256 \".*\"/sha256 \"${SHA}\"/" "$FORMULA"
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/yoda.rb
+          git commit -m "yoda ${{ steps.hash.outputs.version }}"
+          git push
