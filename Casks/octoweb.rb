@@ -1,17 +1,17 @@
 cask "octoweb" do
   desc "Lightweight macOS browser with AI assistant integration"
   homepage "https://github.com/muvon/octoweb"
-  version "0.13.0"
+  version "0.14.0"
 
   on_macos do
     on_intel do
       url "https://github.com/muvon/octoweb/releases/download/#{version}/Octoweb-#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "b5f7ea8d879892020fb0fb472f28f96d883819aaaebd52c0a1f0f201cca41af1"
+      sha256 "a2d6725c8b5775981ef6621e76892d93fd9094359368ed52a1a1c00765c58f14"
     end
 
     on_arm do
       url "https://github.com/muvon/octoweb/releases/download/#{version}/Octoweb-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "57814da1317787e7526f9c8bff6f1ef1a90d79711e82457e69dce5141b66ba25"
+      sha256 "d0c72c9f03503309fa7466064c04ce8e1f4149a9bbd1813893a4fb904baafe22"
     end
   end
 
