@@ -1,6 +1,6 @@
 cask "vext" do
-  version "1.5.0"
-  sha256 "b9dd58cdedff6e25555182fdaa32250651473b589bd6e6351ad4f8acbd66c18f"
+  version "1.5.1"
+  sha256 "f9336f49fc297fc141daed3ea997d531858e2054e8d79414e4281a115e055cbb"
 
   url "https://cdn.getvext.app/#{version.major}/Vext-#{version}.dmg"
   name "Vext"
