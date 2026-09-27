@@ -1,14 +1,14 @@
 class Octobrain < Formula
   desc "Standalone memory management system for AI context and conversation state"
   homepage "https://github.com/muvon/octobrain"
-  version "0.14.2"
+  version "0.14.3"
   license "Apache-2.0"
 
   # Only ARM macOS builds are published — no x86_64 macOS asset exists
   on_macos do
     on_arm do
       url "https://github.com/Muvon/octobrain/releases/download/#{version}/octobrain-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "4ffdebb5da3c1d74f9f76a44cf4514b937b2fb7871dc76f282c0c000c87dab2a"
+      sha256 "bae1802f8aecb6f61c2648fc0e8ddfbf51d18b9712e06b1120e179d68551eaa5"
     end
   end
 
