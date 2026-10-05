@@ -1,6 +1,6 @@
 cask "timex" do
-  version "1.5.0"
-  sha256 "2baa44b21ff534f4bc79539a661a221d1c22ec904d76d07cd8cd8ff86dd5ba15"
+  version "1.6.0"
+  sha256 "3306c507045ede2e4bb8a8c0516ac91a3a6ed020e5a6fd28475baf7a25ffe58d"
 
   url "https://cdn.gettimex.app/#{version.major}/Timex-#{version}.dmg"
   name "Timex"
