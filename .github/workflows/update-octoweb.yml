@@ -12,42 +12,49 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v4
 
-      - name: Compute SHA256 hashes
-        id: hashes
+      - name: Fetch DMG and compute SHA256
+        id: hash
         run: |
           VERSION="${{ github.event.client_payload.version }}"
-          BASE="https://github.com/muvon/octoweb/releases/download/${VERSION}"
+          MAJOR="${VERSION%%.*}"
+          URL="https://cdn.octoweb.xyz/${MAJOR}/Octoweb-${VERSION}.dmg"
 
-          SHA_X86=$(curl -fsSL "${BASE}/Octoweb-${VERSION}-x86_64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
-          SHA_ARM=$(curl -fsSL "${BASE}/Octoweb-${VERSION}-aarch64-apple-darwin.tar.gz" | sha256sum | awk '{print $1}')
+          # CDN may need a moment to propagate after the release publishes.
+          # Retry a few times before giving up.
+          for i in 1 2 3 4 5; do
+            if curl -fsSL "$URL" -o /tmp/octoweb.dmg; then
+              break
+            fi
+            echo "DMG not yet at ${URL} (attempt $i), retrying in 20s..."
+            sleep 20
+          done
 
-          echo "sha_x86=${SHA_X86}" >> $GITHUB_OUTPUT
-          echo "sha_arm=${SHA_ARM}" >> $GITHUB_OUTPUT
+          if [ ! -s /tmp/octoweb.dmg ]; then
+            echo "Failed to fetch ${URL}"
+            exit 1
+          fi
+
+          SHA=$(sha256sum /tmp/octoweb.dmg | awk '{print $1}')
+          echo "sha=${SHA}" >> $GITHUB_OUTPUT
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - name: Update cask
         run: |
-          VERSION="${{ steps.hashes.outputs.version }}"
-          SHA_X86="${{ steps.hashes.outputs.sha_x86 }}"
-          SHA_ARM="${{ steps.hashes.outputs.sha_arm }}"
-
+          VERSION="${{ steps.hash.outputs.version }}"
+          SHA="${{ steps.hash.outputs.sha }}"
           CASK="Casks/octoweb.rb"
 
           sed -i "s/version \".*\"/version \"${VERSION}\"/" "$CASK"
-
-          awk -v sha_x86="$SHA_X86" -v sha_arm="$SHA_ARM" '
-            /on_intel/  { in_intel=1 }
-            /on_arm/    { in_intel=0; in_arm=1 }
-            /end/       { in_intel=0; in_arm=0 }
-            in_intel && /sha256/ { sub(/"[^"]+"/, "\"" sha_x86 "\"") }
-            in_arm   && /sha256/ { sub(/"[^"]+"/, "\"" sha_arm "\"") }
-            { print }
-          ' "$CASK" > "$CASK.tmp" && mv "$CASK.tmp" "$CASK"
+          sed -i "s/sha256 \".*\"/sha256 \"${SHA}\"/" "$CASK"
 
       - name: Commit and push
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add Casks/octoweb.rb
-          git commit -m "octoweb ${{ steps.hashes.outputs.version }}"
+          if git diff --cached --quiet; then
+            echo "No changes — cask already at ${{ steps.hash.outputs.version }}"
+            exit 0
+          fi
+          git commit -m "octoweb ${{ steps.hash.outputs.version }}"
           git push

@@ -1,22 +1,26 @@
 cask "octoweb" do
-  desc "Lightweight macOS browser with AI assistant integration"
-  homepage "https://github.com/muvon/octoweb"
   version "0.19.0"
+  sha256 "e2924909a31238d38456512ba7d6c8975d8f4ebae5451fab2d01ed63108459ba"
 
-  on_macos do
-    on_intel do
-      url "https://github.com/muvon/octoweb/releases/download/#{version}/Octoweb-#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    end
+  url "https://cdn.octoweb.xyz/#{version.major}/Octoweb-#{version}.dmg"
+  name "Octoweb"
+  desc "Lightweight browser with AI assistant integration"
+  homepage "https://octoweb.xyz/"
 
-    on_arm do
-      url "https://github.com/muvon/octoweb/releases/download/#{version}/Octoweb-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    end
-  end
-
-  depends_on formula: "octomind"
+  auto_updates true
+  depends_on arch: :arm64
   depends_on formula: "octobrain"
+  depends_on formula: "octomind"
+  depends_on macos: ">= :ventura"
 
   app "Octoweb.app"
+
+  zap trash: [
+    "~/.local/share/octoweb",
+    "~/.local/share/octoweb-workspaces",
+    "~/Library/Application Support/octoweb",
+    "~/Library/Caches/io.muvon.octoweb",
+    "~/Library/Preferences/io.muvon.octoweb.plist",
+    "~/Library/WebKit/io.muvon.octoweb",
+  ]
 end
