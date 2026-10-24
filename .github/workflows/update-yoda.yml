@@ -28,6 +28,7 @@ jobs:
 
           FORMULA="Formula/yoda.rb"
 
+          sed -i "s|/archive/refs/tags/[^\"]*\.tar\.gz|/archive/refs/tags/${VERSION}.tar.gz|" "$FORMULA"
           sed -i "s/version \".*\"/version \"${VERSION}\"/" "$FORMULA"
           sed -i "s/sha256 \".*\"/sha256 \"${SHA}\"/" "$FORMULA"
 

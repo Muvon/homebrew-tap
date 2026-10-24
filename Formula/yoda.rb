@@ -1,9 +1,9 @@
 class Yoda < Formula
   desc "Dockerize any project and deploy it to your servers with pure Bash"
   homepage "https://github.com/Muvon/yoda"
-  url "https://github.com/Muvon/yoda/archive/refs/tags/2.4.tar.gz"
-  sha256 "dd435caf04b82fc426a4b741a2533af65cdb26fd8dcc9e7497cfaf29a24253a7"
-  version "2.4"
+  url "https://github.com/Muvon/yoda/archive/refs/tags/2.5.tar.gz"
+  sha256 "04ffe6947865b046f64bfec13e0701d3edb3424b39a7bbe017f644869a3ee9e5"
+  version "2.5"
   head "https://github.com/Muvon/yoda.git"
 
   depends_on "bash"
