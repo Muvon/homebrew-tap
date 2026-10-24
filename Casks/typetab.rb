@@ -1,6 +1,6 @@
 cask "typetab" do
-  version "1.1.0"
-  sha256 "d36a6453139ef22e73eb2d28433860df45052ba3e115e40ec27cf7190dd61c31"
+  version "1.2.0"
+  sha256 "f2f412696071f1b64459db752f693cb7eaf39f133cd9c515f6db886fc565ee8d"
 
   url "https://cdn.typetab.app/#{version.major}/TypeTab-#{version}.dmg"
   name "TypeTab"
