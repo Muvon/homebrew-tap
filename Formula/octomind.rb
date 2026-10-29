@@ -1,7 +1,7 @@
 class Octomind < Formula
   desc "Session-based AI development assistant with MCP tools and multi-provider AI integration"
   homepage "https://octomind.run/product/octomind/"
-  version "0.66.3"
+  version "0.66.4"
   license "Apache-2.0"
 
   depends_on "git"
@@ -9,12 +9,12 @@ class Octomind < Formula
   on_macos do
     on_intel do
       url "https://github.com/muvon/octomind/releases/download/#{version}/octomind-#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "19b4215fc28972b0e3f54b71ce884b5c767f8be50cb21ebee4ac4e6de66ec664"
+      sha256 "3ebed4877ff78b740eb0d6b2faa96692e1abd58b99b3097c38c30a9b5df38d5e"
     end
 
     on_arm do
       url "https://github.com/muvon/octomind/releases/download/#{version}/octomind-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "97afb530fa15ed28054f2d9e5cc4550094a5683fe0772d059754cad88f5011f2"
+      sha256 "0bc156d4d86694cc369b6d46d69d9e2bb41d8568188ddb35b3ecf3b8e716afa1"
     end
   end
 
