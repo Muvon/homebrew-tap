@@ -1,19 +1,19 @@
 class Octohub < Formula
   desc "High-performance LLM proxy server with completion chaining and request/response logging"
   homepage "https://github.com/muvon/octohub"
-  version "0.14.7"
+  version "0.15.0"
   license "Apache-2.0"
 
   on_macos do
     on_intel do
       url "https://github.com/muvon/octohub/releases/download/#{version}/octohub-#{version}-x86_64-apple-darwin.tar.gz"
       # Filled by .github/workflows/update-octohub.yml on the next release that ships an Intel asset.
-      sha256 "45f470141ff7b9858b2108e65e2a1bdb9803ad530ec1c4da47571ebe0a6cfdc6"
+      sha256 "8da3aa06a6466384ae938ab9be54df161abfefef06f7f828e3a010541be318db"
     end
 
     on_arm do
       url "https://github.com/muvon/octohub/releases/download/#{version}/octohub-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "f404a3b520ec6193715a04f3c736fd99d55add35b564ab7459e0fc3817f0b33f"
+      sha256 "bdb5bdea350707ecd4521055b256034a45df7e03f9078debf46f7295e9481550"
     end
   end
 
