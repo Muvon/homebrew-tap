@@ -1,6 +1,6 @@
 cask "octoweb" do
-  version "0.20.0"
-  sha256 "5b7644302aaf50e207163caef92026fb6f5b5e98c2fb8b8a8d135b019b6b7d3a"
+  version "0.22.0"
+  sha256 "f7e29d26ce85f332577b9cc685a4955700f53ad286df2f9fe45967bfec7418c0"
 
   url "https://cdn.octoweb.xyz/#{version.major}/Octoweb-#{version}.dmg"
   name "Octoweb"
