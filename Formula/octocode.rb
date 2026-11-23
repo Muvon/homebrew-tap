@@ -4,12 +4,8 @@ class Octocode < Formula
   version "0.29.2"
   license "Apache-2.0"
 
+  # Only ARM macOS builds are published — no x86_64 macOS asset exists
   on_macos do
-    on_intel do
-      url "https://github.com/muvon/octocode/releases/download/#{version}/octocode-#{version}-x86_64-apple-darwin.tar.gz"
-      sha256 "3631a46c5279f5c89226077f2473b96907b2d113225a9e8d68beb6c5266507de"
-    end
-
     on_arm do
       url "https://github.com/muvon/octocode/releases/download/#{version}/octocode-#{version}-aarch64-apple-darwin.tar.gz"
       sha256 "51079178573098a606c17cbbbbe3fed46efea329570e071c1f45990b419b620a"
