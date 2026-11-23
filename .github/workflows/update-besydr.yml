@@ -1,0 +1,114 @@
+name: Update Besydr
+
+# Besydr's release workflow sends this event once cdn.besydr.com serves the release. The
+# event carries the version and the SHA-256 of each archive, taken from the release's signed
+# manifest, so nothing is downloaded here. The formula is written whole from the template
+# below: change the template, not Formula/besydr.rb.
+on:
+  repository_dispatch:
+    types: [besydr-release]
+
+jobs:
+  update:
+    name: Update besydr formula to ${{ github.event.client_payload.version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout tap
+        uses: actions/checkout@v4
+
+      - name: Write formula
+        id: formula
+        shell: bash # the checks below use [[ =~ ]]
+        run: |
+          set -eu
+          # Both kinds of value go into the formula as they are, so the whole value must fit.
+          # grep would pass a value of several lines as soon as one line fits; [[ =~ ]] does not.
+          version_pattern='^[0-9]+\.[0-9]+\.[0-9]+$'
+          sha256_pattern='^[0-9a-f]{64}$'
+          version=$(jq -r '.client_payload.version // ""' "$GITHUB_EVENT_PATH")
+          if ! [[ $version =~ $version_pattern ]]; then
+            echo "::error::the version in the event is not like 1.2.3"
+            exit 1
+          fi
+          # usage: sha256_of <target>
+          sha256_of() {
+            hash=$(jq -r --arg target "$1" '.client_payload.sha256[$target] // ""' "$GITHUB_EVENT_PATH")
+            if ! [[ $hash =~ $sha256_pattern ]]; then
+              echo "::error::the SHA-256 for $1 in the event is not 64 hex digits" >&2
+              exit 1
+            fi
+            printf '%s' "$hash"
+          }
+          macos_arm=$(sha256_of aarch64-apple-darwin)
+          linux_arm=$(sha256_of aarch64-unknown-linux-musl)
+          linux_intel=$(sha256_of x86_64-unknown-linux-musl)
+
+          # The shell fills in $version and the three hashes; #{...} is left for Ruby.
+          cat > Formula/besydr.rb <<FORMULA
+          # Written by .github/workflows/update-besydr.yml at each Besydr release.
+          # Change the template in that workflow, not this file.
+          class Besydr < Formula
+            desc "Supervisor and memory that runs beside a coding agent"
+            homepage "https://besydr.com"
+            version "$version"
+            license :cannot_represent
+
+            # Only ARM macOS builds are published — no x86_64 macOS asset exists
+            on_macos do
+              on_arm do
+                url "https://cdn.besydr.com/#{version}/besydr-#{version}-aarch64-apple-darwin.tar.gz"
+                sha256 "$macos_arm"
+              end
+            end
+
+            on_linux do
+              on_arm do
+                url "https://cdn.besydr.com/#{version}/besydr-#{version}-aarch64-unknown-linux-musl.tar.gz"
+                sha256 "$linux_arm"
+              end
+
+              on_intel do
+                url "https://cdn.besydr.com/#{version}/besydr-#{version}-x86_64-unknown-linux-musl.tar.gz"
+                sha256 "$linux_intel"
+              end
+            end
+
+            def install
+              bin.install "besydr"
+            end
+
+            def caveats
+              <<~EOS
+                Connect a coding agent with one of:
+                  besydr install claude
+                  besydr install codex
+                  besydr install opencode
+                  besydr install pi
+
+                Homebrew updates this copy: brew upgrade besydr
+              EOS
+            end
+
+            test do
+              assert_match version.to_s, shell_output("#{bin}/besydr --version")
+            end
+          end
+          FORMULA
+          ruby -c Formula/besydr.rb
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Commit and push
+        env:
+          VERSION: ${{ steps.formula.outputs.version }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/besydr.rb
+          # The same version sent a second time changes nothing, and git refuses an empty commit.
+          if git diff --cached --quiet; then
+            echo "Formula/besydr.rb is already at $VERSION"
+            exit 0
+          fi
+          git commit -m "besydr $VERSION"
+          git push
