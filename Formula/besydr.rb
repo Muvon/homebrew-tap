@@ -3,26 +3,26 @@
 class Besydr < Formula
   desc "Supervisor and memory that runs beside a coding agent"
   homepage "https://besydr.com"
-  version "0.2.0"
+  version "0.3.0"
   license :cannot_represent
 
   # Only ARM macOS builds are published — no x86_64 macOS asset exists
   on_macos do
     on_arm do
       url "https://cdn.besydr.com/#{version}/besydr-#{version}-aarch64-apple-darwin.tar.gz"
-      sha256 "837eeb15f10ba391ec542ee83bd2930baf965c3ff2c45018a70b2915e8ebff38"
+      sha256 "89f7b167e7e2261a4542f32c7c4df3d354212312554850d21ff0b5a50198209b"
     end
   end
 
   on_linux do
     on_arm do
       url "https://cdn.besydr.com/#{version}/besydr-#{version}-aarch64-unknown-linux-musl.tar.gz"
-      sha256 "974bc319c49c042347dec9c4f5df9664a5a0dbae70203d04b1abb58d1f4d3e16"
+      sha256 "1f4150af2ecf5f2e905eab4cb73685248c5c70d6d46b5463490b933ab260d9f3"
     end
 
     on_intel do
       url "https://cdn.besydr.com/#{version}/besydr-#{version}-x86_64-unknown-linux-musl.tar.gz"
-      sha256 "d872418355052a8168c28fb70ad21be462cc511373566c90b0c4e14ee811e3fc"
+      sha256 "18b19033d7688063be60e301f4b8f1570235c460da7b77af967c1eb6f816eb29"
     end
   end
 
